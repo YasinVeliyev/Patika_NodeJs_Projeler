@@ -1,39 +1,40 @@
-const express=require("express")
-require("dotenv").config()
-const path=require("path")
+const express = require("express");
+require("dotenv").config();
+const path = require("path");
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const pageRouter = require("./routes/pageRoutes");
+const authRouter = require("./routes/authRoutes");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const app = express();
 
-const app=express()
+app.use(express.static("public"));
 
-app.use(express.static("public"))
-app.use(express.urlencoded())
-app.use(express.json())
-app.set("view engine","ejs")
+app.set("view engine", "ejs");
+app.use(
+    session({
+        secret: process.env["SECRET"],
+        store: MongoStore.create({
+            mongoUrl: process.env["MONGO_SESSION_URI"],
+        }),
+    }),
+);
+app.use((req, res, next) => {
+    res.locals.user = req.session.user;
+    next();
+});
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+app.use(pageRouter);
+app.use(authRouter);
 
-app.get("/",(req,res)=>{
-    res.render("index",{page:" index"})
-})
-
-app.get("/about",(req,res)=>{
-    res.render("about",{page:" about"})
-})
-
-app.get("/photos",(req,res)=>{
-    res.render("photo",{page:" photos"})
-})
-
-app.get("/contact",(req,res)=>{
-    res.render("contact",{page:" contact"})
-})
-
-app.get("/login",(req,res)=>{
-    res.render("login",{page:" login"})
-})
-
-app.get("/register",(req,res)=>{
-    res.render("register",{page:" register"})
-})
-
-
-const PORT=process.env.PORT||3000
-app.listen(3000,()=>console.log(`Server is running port on ${PORT}`))
+const PORT = process.env.PORT || 5000;
+mongoose
+    .connect(process.env["MONGO_URI"])
+    .then(() => {
+        app.listen(PORT, () => console.log(`Server is running port on ${PORT}`));
+    })
+    .catch((err) => console.error(err));

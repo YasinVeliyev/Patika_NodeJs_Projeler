@@ -30,20 +30,26 @@
                             euismod vulputate eu eu arcu.</p>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-5">
-                    <!-- Share box -->
-                    <div class="tm-bg-gray tm-share-box">
-                        <div class="text-center">
-                            <button
-                                class="btn btn-primary p-0 mb-4 tm-btn-animate tm-btn-download tm-icon-download"><span>Update
-                                    Details</span></button>
-                        </div>
-                        <div class="text-center">
-                            <button class="btn btn-danger p-0 tm-btn-animate tm-btn-download tm-icon-download"><span>Delete
-                                    Photo</span></button>
+                <% if (locals.user.role=="admin" || locals.user._id == photo.author) { %>
+                    <div class="col-xl-4 col-lg-5">
+                        <!-- Share box -->
+                        <div class="tm-bg-gray tm-share-box">
+                            <div class="text-center">
+                                <form action="/photos/update-photo/" method="get">
+                                    <button type="submit" class="btn btn-primary p-0 mb-4 tm-btn-animate tm-btn-download tm-icon-download"><span>Update Details</span></button>
+                                </form>
+                                
+                            </div>
+                            <div class="text-center">
+                                <form action="/photos/delete-photo/" method="post"> 
+                                    <button class="btn btn-danger p-0 tm-btn-animate tm-btn-download tm-icon-download"><span>Delete Photo</span></button>
+                                </form>
+                                
+                            </div>
                         </div>
                     </div>
-                </div>
+                <% } %>
+                
             </div>
         </main>
         <%- include("layouts/footer") %>
