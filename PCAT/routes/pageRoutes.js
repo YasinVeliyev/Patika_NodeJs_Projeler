@@ -9,5 +9,6 @@ router.get("/photos", pageController.getPhotosPage);
 router.get("/contact", pageController.getContactPage);
 router.get("/login", pageController.getLoginPage);
 router.get("/register", pageController.getRegisterPage);
+router.get("/add_photo", pageController.getAddPhotoPage);
 
 module.exports = router;

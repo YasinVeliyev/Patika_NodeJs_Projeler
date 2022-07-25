@@ -7,9 +7,17 @@ exports.registerUser = async (req, res, next) => {
 };
 
 exports.loginUser = async (req, res, next) => {
-    let user = await User.findById("628be763bb1ff041267839be");
-    req.session.user = user;
-    
-    console.log(user, await user.checkPassword("1"), "asas");
-    res.redirect("/");
+    let user = await User.findOne({ email: req.body.email });
+
+    if (user && (await user.checkPassword(req.body.password))) {
+        req.session.user = user;
+        return res.redirect("/");
+    } else {
+        return res.redirect("/login");
+    }
+};
+
+exports.logoutUser = (req, res) => {
+    req.session.destroy();
+    res.redirect("/login");
 };

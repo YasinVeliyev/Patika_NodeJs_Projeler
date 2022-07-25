@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const pageRouter = require("./routes/pageRoutes");
 const authRouter = require("./routes/authRoutes");
+const photoRouter = require("./routes/photoRoutes");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const app = express();
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(pageRouter);
 app.use(authRouter);
+app.use(photoRouter);
 
 const PORT = process.env.PORT || 5000;
 mongoose
