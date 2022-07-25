@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(pageRouter);
 app.use(authRouter);
-app.use(photoRouter);
+app.use("/photos", photoRouter);
 
 const PORT = process.env.PORT || 5000;
 mongoose

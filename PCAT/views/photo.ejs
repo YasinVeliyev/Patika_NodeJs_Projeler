@@ -41,7 +41,9 @@
                                 
                             </div>
                             <div class="text-center">
-                                <form action="/photos/delete-photo/" method="post"> 
+                                <form action="/photos/delete-photo/" method="post">
+                                    <input type="hidden" name="photo" value="<%- photo._id %>"> 
+                                     
                                     <button class="btn btn-danger p-0 tm-btn-animate tm-btn-download tm-icon-download"><span>Delete Photo</span></button>
                                 </form>
                                 

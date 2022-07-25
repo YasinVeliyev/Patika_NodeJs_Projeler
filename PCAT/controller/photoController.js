@@ -1,7 +1,6 @@
 const Photo = require("../models/photoModel");
 
 exports.addPhoto = async (req, res, next) => {
-    console.log(req.file);
     await Photo.create({
         name: req.body.name,
         src: req.file.filename,
@@ -9,5 +8,10 @@ exports.addPhoto = async (req, res, next) => {
         description: req.body.description,
         author: req.session.user._id,
     });
+    res.redirect("/photos");
+};
+
+exports.deletePhoto = async (req, res, next) => {
+    await Photo.findOneAndDelete({ _id: req.body.photo, author: req.session.user._id });
     res.redirect("/photos");
 };

@@ -9,7 +9,6 @@ exports.getAboutPage = (req, res) => {
 };
 exports.getPhotosPage = async (req, res) => {
     const photos = await Photo.find({});
-    console.log(photos);
     res.render("photo", { page: " photos", photos });
 };
 exports.getContactPage = (req, res) => {
