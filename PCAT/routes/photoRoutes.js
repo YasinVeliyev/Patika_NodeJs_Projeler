@@ -23,6 +23,6 @@ const upload = multer({ storage: storage });
 const router = Router();
 
 router.post("/add_photo", upload.single("src"), photoController.addPhoto);
-router.post("/delete-photo", photoController.deletePhoto);
+router.delete("/:photoId/delete-photo", photoController.deletePhoto);
 
 module.exports = router;

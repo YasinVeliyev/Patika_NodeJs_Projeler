@@ -1,4 +1,6 @@
 const Photo = require("../models/photoModel");
+const fs = require("node:fs");
+const path = require("node:path");
 
 exports.addPhoto = async (req, res, next) => {
     await Photo.create({
@@ -11,7 +13,16 @@ exports.addPhoto = async (req, res, next) => {
     res.redirect("/photos");
 };
 
-exports.deletePhoto = async (req, res, next) => {
-    await Photo.findOneAndDelete({ _id: req.body.photo, author: req.session.user._id });
-    res.redirect("/photos");
+exports.deletePhoto = (req, res, next) => {
+    if (req.session.user.role == "admin") {
+        Photo.findByIdAndDelete(req.params.photoId, (err, doc, res) => {
+            fs.unlinkSync(path.resolve(`./public/photos/${doc.src}`));
+        });
+    } else {
+        Photo.findOneAndDelete({ _id: req.params.photoId, author: req.session.user._id }, (err, doc, res) => {
+            fs.unlinkSync(path.resolve(`./public/photos/${doc.src}`));
+        });
+    }
+
+    res.status(200).json({});
 };
