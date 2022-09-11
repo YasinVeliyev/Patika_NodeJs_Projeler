@@ -26,3 +26,17 @@ exports.deletePhoto = (req, res, next) => {
 
     res.status(200).json({});
 };
+
+
+exports.updatePhoto = async (req, res, next) => {
+    console.log(req.body, req.params.photoId)
+    let photo = await Photo.findByIdAndUpdate(req.params.photoIdf, {
+        name: req.body.name,
+        src: req.file?.filename,
+        title: req.body.title,
+        description: req.body.description,
+    }, { runValidators: true })
+    console.log(photo)
+    res.redirect("/photos")
+}
+

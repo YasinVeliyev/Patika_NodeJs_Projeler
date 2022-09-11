@@ -13,8 +13,7 @@ let storage = multer.diskStorage({
             err.code = "filetype"; // to check on file type
             return cb(err);
         }
-        console.log(file);
-        cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+        cb(null, file.fieldname + "-" + new Date().toISOString() + path.extname(file.originalname));
     },
 });
 
@@ -23,6 +22,6 @@ const upload = multer({ storage: storage });
 const router = Router();
 
 router.post("/add_photo", upload.single("src"), photoController.addPhoto);
-router.delete("/:photoId/delete-photo", photoController.deletePhoto);
-
+router.delete("/:photoId/delete", photoController.deletePhoto);
+router.post("/:photoId/update", upload.single("src"), photoController.updatePhoto);
 module.exports = router;

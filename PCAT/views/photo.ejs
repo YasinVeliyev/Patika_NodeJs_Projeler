@@ -15,7 +15,7 @@
     <div class="container-fluid tm-content-container mx-auto pt-4">
         <main>
             <% for( let photo of photos ) { %>
-                <section >
+                <section>
                     <div class="row mb-5 pb-4">
                         <div class="col-12">
                             <img src="/photos/<%- photo.src %>" alt="Image" class="img-fluid tm-catalog-item-img">
@@ -25,30 +25,37 @@
                         <div class="col-xl-8 col-lg-7">
                             <!-- Video description -->
                             <div class="tm-video-description-box">
-                                <h2 class="mb-5 tm-video-title"><%- photo.name %> </h2>
-                                <p class="mb-4"><%- photo.description %> </p>
+                                <h2 class="mb-5 tm-video-title">
+                                    <%- photo.name %>
+                                </h2>
+                                <p class="mb-4">
+                                    <%- photo.description %>
+                                </p>
                             </div>
                         </div>
-                        <% if (locals.user?.role=="admin" || locals.user?._id == photo.author) { %>
+                        <% if (locals.user?.role=="admin" || locals.user?._id==photo.author._id.toString()) { %>
                             <div class="col-xl-4 col-lg-5 tm-bg-gray tm-share-box">
                                 <!-- Share box -->
-                              
-                                    
-                                        <form action="/photos/<%- photo._id %>/update-photo/" method="get"> 
-                                            <button type="submit" class="btn btn-primary p-0 mb-4 tm-btn-animate tm-btn-download tm-icon-download"><span>Update Details</span></button>
-                                        </form>
-                                        
-                                   
-                                    
-                                        <form action="/photos/<%- photo._id %>/delete-photo/" class="delete_photo" novalidate>
-                                            <button class="btn btn-danger p-0 tm-btn-animate tm-btn-download tm-icon-download" type="submit" ><span>Delete Photo</span></button>
-                                        </form>
-                               
+
+
+                                <form action="/photos/<%- photo._id %>/update/" method="get">
+                                    <button type="submit"
+                                        class="btn btn-primary p-0 mb-4 tm-btn-animate tm-btn-download tm-icon-download"><span>Update
+                                            Details</span></button>
+                                </form>
+
+
+
+                                <form action="/photos/<%- photo._id %>/delete/" class="delete_photo" novalidate>
+                                    <button class="btn btn-danger p-0 tm-btn-animate tm-btn-download tm-icon-download"
+                                        type="submit"><span>Delete Photo</span></button>
+                                </form>
+
                             </div>
-                        <% } %>  
+                            <% } %>
                     </div>
                 </section>
-            <% } %>
+                <% } %>
         </main>
         <%- include("layouts/footer") %>
     </div>

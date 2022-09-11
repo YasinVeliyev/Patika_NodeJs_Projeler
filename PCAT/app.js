@@ -15,23 +15,29 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(
     session({
-        secret: process.env["SECRET"],
+        secret: process.env["SESSION_SECRET"],
+        resave: true,
+        saveUninitialized: true,
         store: MongoStore.create({
             mongoUrl: process.env["MONGO_SESSION_URI"],
         }),
     }),
 );
 app.use((req, res, next) => {
+
     res.locals.user = req.session.user;
+
     next();
 });
-app.use(morgan("dev"));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 
 app.use(pageRouter);
 app.use(authRouter);
 app.use("/photos", photoRouter);
+
 
 const PORT = process.env.PORT || 5000;
 mongoose

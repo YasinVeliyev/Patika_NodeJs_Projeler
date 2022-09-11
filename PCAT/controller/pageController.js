@@ -1,7 +1,6 @@
 const Photo = require("../models/photoModel");
 
 exports.getIndexPage = (req, res) => {
-    console.log(req.session);
     res.render("index", { page: " index" });
 };
 exports.getAboutPage = (req, res) => {
@@ -9,6 +8,7 @@ exports.getAboutPage = (req, res) => {
 };
 exports.getPhotosPage = async (req, res) => {
     const photos = await Photo.find({});
+
     res.render("photo", { page: " photos", photos });
 };
 exports.getContactPage = (req, res) => {
@@ -23,4 +23,9 @@ exports.getRegisterPage = (req, res) => {
 
 exports.getAddPhotoPage = (req, res) => {
     res.render("add_photo", { page: " add_photo" });
+};
+
+exports.getUpdatePhotoPage = async (req, res) => {
+    let photo = await Photo.findById(req.params.photoId).lean()
+    res.render("update", { page: " update", photo });
 };
